@@ -15,10 +15,6 @@ To use the icons in your project, follow these steps:
 
 .. code:: cpp
 
-    #include <QFontDatabase>
-
-    ...
-
     if (QFontDatabase::addApplicationFont(":/icons/MaterialIcons-Regular.ttf") == -1)
         qWarning() << "Failed to load font Material";
 
@@ -31,10 +27,6 @@ To use the icons in your project, follow these steps:
 
 .. code:: cpp
 
-    #include <QQmlApplicationEngine>
-
-    ...
-
     QQmlApplicationEngine engine;
     engine.addImageProvider("icon",
                             new IconProvider("Material Icons", ":/icons/codepoints.json"));
@@ -43,15 +35,9 @@ To use the icons in your project, follow these steps:
 
 .. code:: qml
 
-    import QtQuick 2.12
-
-    ...
-
     ToolButton {
         icon.source: "image://icon/info"
     }
-
-    ...
 
     ItemDelegate {
         icon.source: "image://icon/settings"
