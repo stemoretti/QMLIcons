@@ -46,7 +46,9 @@ QImage IconProvider::requestImage(const QString &id, QSize *size, const QSize &r
 
     QPainter painter(&image);
     painter.setFont(font);
-    painter.drawText(0, height, iconChar);
+    painter.drawText(width / 2 - qMin(width, height) / 2,
+                     height / 2 + qMin(width, height) / 2,
+                     iconChar);
     painter.end();
 
     return image;
