@@ -5,6 +5,3 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/iconprovider.cpp
-
-RESOURCES += \
-    $$PWD/icons.qrc
