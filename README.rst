@@ -1,7 +1,7 @@
 QML Icons
 =========
 
-Use Material font icons (or other font icons like FontAwesome, fontello...) in QML.
+Use Material icon font (or other icon fonts like FontAwesome, fontello...) in QML.
 
 Usage
 -----
