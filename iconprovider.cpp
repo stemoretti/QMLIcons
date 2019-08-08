@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QPainter>
+#include <QFontMetrics>
 
 IconProvider::IconProvider(const QString &family, const QString &codesPath)
     : QQuickImageProvider(QQuickImageProvider::Image)
@@ -12,7 +13,10 @@ IconProvider::IconProvider(const QString &family, const QString &codesPath)
     QFile file(codesPath);
     if (file.exists() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         auto jd = QJsonDocument::fromJson(file.readAll());
-        codepoints = jd.object();
+        if (!jd.isNull())
+            codepoints = jd.object();
+        else
+            qWarning() << "Invalid codepoints JSON file" << codesPath;
     } else {
         qWarning() << "Cannot open icon codes file" << codesPath;
         qWarning() << file.errorString();
@@ -39,16 +43,19 @@ QImage IconProvider::requestImage(const QString &id, QSize *size, const QSize &r
     image.fill(QColor(Qt::transparent));
 
     QString iconChar("?");
-    if (codepoints.value(id).isUndefined())
+    if (codepoints[id].isUndefined())
         qWarning() << "Icon name" << id << "not found in" << font.family();
     else
         iconChar = codepoints[id].toString();
 
+    QFontMetrics fm(font);
+    float charWidth = fm.boundingRect(iconChar).width();
+    if ((charWidth / width) > 1)
+        font.setPixelSize(font.pixelSize() / (charWidth / width));
+
     QPainter painter(&image);
     painter.setFont(font);
-    painter.drawText(width / 2 - qMin(width, height) / 2,
-                     height / 2 + qMin(width, height) / 2,
-                     iconChar);
+    painter.drawText(QRect(0, 0, width, height), Qt::AlignCenter, iconChar);
     painter.end();
 
     return image;
