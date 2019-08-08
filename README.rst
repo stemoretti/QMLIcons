@@ -3,6 +3,10 @@ QML Icons
 
 Use Material icon font (or other icon fonts like FontAwesome, fontello...) in QML.
 
+.. image:: example/screenshot.png
+    :align: center
+    :alt: Screenshot
+
 Usage
 -----
 
