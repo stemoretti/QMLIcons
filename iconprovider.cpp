@@ -43,7 +43,7 @@ QImage IconProvider::requestImage(const QString &id, QSize *size, const QSize &r
     image.fill(QColor(Qt::transparent));
 
     QString iconChar("?");
-    if (codepoints[id].isUndefined())
+    if (codepoints.value(id).isUndefined())
         qWarning() << "Icon name" << id << "not found in" << font.family();
     else
         iconChar = codepoints[id].toString();
