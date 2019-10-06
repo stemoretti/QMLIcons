@@ -4,7 +4,6 @@ QML Icons
 Use Material icon font (or other icon fonts like FontAwesome, fontello...) in QML.
 
 .. image:: example/screenshot.png
-    :align: center
     :alt: Screenshot
 
 Usage
@@ -31,7 +30,7 @@ To use the icons in your project, follow these steps:
     if (QFontDatabase::addApplicationFont(":/icons/MaterialIcons-Regular.ttf") == -1)
         qWarning() << "Failed to load font Material";
 
-- Add the icon provider.
+- Add the image provider to the application engine.
    
   Here you need to specify the image provider name and, in the
   IconProvider constructor, you must give the font family name and
