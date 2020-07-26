@@ -42,10 +42,6 @@ ApplicationWindow {
         }
     }
 
-    FontLoader {
-        id: iconFont
-    }
-
     FileDialog {
         id: fileDialog
 
@@ -115,8 +111,7 @@ ApplicationWindow {
                     text: "Load"
                     onClicked: {
                         if (iconFile.text.length > 0 && jsonFile.text.length > 0) {
-                            iconFont.source = "file://" + iconFile.text
-                            iconLoader.loadIconFont(iconFont.name, jsonFile.text)
+                            iconLoader.loadIconFont(iconFile.text, jsonFile.text)
                             view.model = iconLoader.codepointsFiltered(filter.text)
                             openFontWindow.close()
                         }

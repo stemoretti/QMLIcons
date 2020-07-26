@@ -6,8 +6,6 @@ QT += qml quick quickcontrols2
 
 CONFIG += c++11
 
-include(../qmlicons.pri)
-
 HEADERS += \
     iconloader.h
 

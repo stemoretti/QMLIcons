@@ -11,19 +11,7 @@ Usage
 
 To use the icons in your project, follow these steps:
 
-- Add qmlicons as a submodule to your project.
-
-.. code:: console
-
-    $ git submodule add https://github.com/stemoretti/qmlicons.git
-
-- Include qmlicons.pri in your qmake project file.
-
-.. code:: cmake
-
-    include($$PATH_TO_QMLICONS/qmlicons.pri)
-
-- In your C++ code, add the font to the application font database.
+- Add the font to the application font database.
 
 .. code:: cpp
 
@@ -38,6 +26,10 @@ To use the icons in your project, follow these steps:
   to the characters code.
 
 .. code:: cpp
+
+    #include "iconprovider.h"
+
+    ...
 
     QQmlApplicationEngine engine;
     engine.addImageProvider("icon",

@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QFile>
 
-#include "iconprovider.h"
+#include "../iconprovider.h"
 
 class IconLoader : public QObject {
     Q_OBJECT
@@ -17,10 +17,29 @@ class IconLoader : public QObject {
 public:
     explicit IconLoader(QQmlEngine *engine, QObject *parent = nullptr)
         : QObject(parent)
-        , m_engine(engine) {}
+        , m_engine(engine)
+    {}
 
     Q_INVOKABLE
-    void loadIconFont(const QString &fontName, const QString &codepoints) {
+    void loadIconFont(const QString &fontFile, const QString &codepoints)
+    {
+        if (fontFile.isEmpty()) {
+            qWarning() << "No font file specified";
+            return;
+        }
+
+        int font_id = QFontDatabase::addApplicationFont(fontFile);
+        if (font_id == -1) {
+            qWarning() << "Failed to load font" << fontFile;
+            return;
+        }
+
+        QStringList families = QFontDatabase::applicationFontFamilies(font_id);
+        if (families.size() == 0) {
+            qWarning() << "Unable to determine font families";
+            return;
+        }
+
         QFile file(codepoints);
         if (file.exists() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             auto jd = QJsonDocument::fromJson(file.readAll());
@@ -32,11 +51,12 @@ public:
             qWarning() << "Cannot open icon codes file" << codepoints;
             qWarning() << file.errorString();
         }
-        m_engine->addImageProvider("icon", new IconProvider(fontName, codepoints));
+        m_engine->addImageProvider("icon", new IconProvider(families[0], codepoints));
     }
 
     Q_INVOKABLE
-    QStringList codepointsFiltered(const QString &filter = QString()) {
+    QStringList codepointsFiltered(const QString &filter = QString())
+    {
         return m_codepoints.keys().filter(filter);
     }
 

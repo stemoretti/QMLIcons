@@ -2,10 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
-#include <QFontDatabase>
-#include <QDebug>
 
-#include "iconprovider.h"
 #include "iconloader.h"
 
 int main(int argc, char *argv[])
@@ -15,24 +12,18 @@ int main(int argc, char *argv[])
 
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-    QGuiApplication app(argc, argv);
-
-    if (QFontDatabase::addApplicationFont(":/icons/MaterialIcons-Regular.ttf") == -1)
-        qWarning() << "Failed to load font Material";
-
     QQuickStyle::setStyle("Fusion");
+
+    QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
 
     IconLoader iconLoader(&engine);
+    iconLoader.loadIconFont(":/icons/MaterialIcons-Regular.ttf",
+                            ":/icons/codepoints.json");
 
     QQmlContext *context = engine.rootContext();
     context->setContextProperty("iconLoader", &iconLoader);
-
-    engine.addImageProvider("icon",
-                            new IconProvider("Material Icons", ":/icons/codepoints.json"));
-
-    iconLoader.loadIconFont("Material Icons", ":/icons/codepoints.json");
 
     engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 
