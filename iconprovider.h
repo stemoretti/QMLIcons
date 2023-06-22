@@ -20,10 +20,10 @@ public:
         QFile file(codesPath);
         if (file.exists() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             auto jd = QJsonDocument::fromJson(file.readAll());
-            if (!jd.isNull())
-                codepoints = jd.object();
-            else
+            if (jd.isNull())
                 qWarning() << "Invalid codepoints JSON file" << codesPath;
+            else
+                codepoints = jd.object();
         } else {
             qWarning() << "Cannot open icon codes file" << codesPath;
             qWarning() << file.errorString();
